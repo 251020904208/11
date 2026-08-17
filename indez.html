@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dự Án Web Mẫu - Web Development Portfolio</title>
+  <style>
+    /* ==========================================================================
+       CSS VARIABLES & BASE STYLES
+       ========================================================================== */
+    :root {
+      --bg-color: #f8fafc;
+      --text-color: #1e293b;
+      --primary-color: #2563eb;
+      --primary-hover: #1d4ed8;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --header-bg: #ffffff;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --transition: all 0.3s ease;
+    }
+
+    /* Dark Mode Theme Variables */
+    [data-theme="dark"] {
+      --bg-color: #0f172a;
+      --text-color: #f8fafc;
+      --primary-color: #3b82f6;
+      --primary-hover: #60a5fa;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --header-bg: #1e293b;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      transition: var(--transition);
+    }
+
+    /* ==========================================================================
+       HEADER & NAVIGATION (EXTRA 2: Responsive Hamburger Menu)
+       ========================================================================== */
+    header {
+      position: sticky;
+      top: 0;
+      background-color: var(--header-bg);
+      box-shadow: var(--shadow);
+      z-index: 100;
+      transition: var(--transition);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    .nav-tools {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-link {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .nav-link:hover {
+      color: var(--primary-color);
+    }
+
+    .theme-btn {
+      background: none;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .theme-btn:hover {
+      background-color: var(--primary-color);
+      color: #ffffff;
+    }
+
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-color);
+    }
+
+    /* ==========================================================================
+       MAIN CONTENT & RESPONSIVE GRID
+       ========================================================================== */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      opacity: 0.8;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      margin: 2.5rem 0 1.5rem 0;
+      font-size: 1.8rem;
+      text-align: center;
+    }
+
+    /* Responsive Grid Layout */
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h3 {
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    /* ==========================================================================
+       FORM STYLING (EXTRA 4: Dynamic Validation)
+       ========================================================================== */
+    .contact-form {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: var(--card-bg);
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--card-border);
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid var(--card-border);
+      border-radius: 4px;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: inherit;
+    }
+
+    .error-message {
+      color: #ef4444;
+      font-size: 0.85rem;
+      margin-top: 0.3rem;
+      display: none;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 0.8rem;
+      background-color: var(--primary-color);
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .submit-btn:hover {
+      background-color: var(--primary-hover);
+    }
+
+    /* ==========================================================================
+       BACK TO TOP BUTTON (EXTRA 3)
+       ========================================================================== */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: none;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .back-to-top:hover {
+      background-color: var(--primary-hover);
+    }
+
+    /* ==========================================================================
+       MEDIA QUERIES (Responsive Breakpoints)
+       ========================================================================== */
+    @media (max-width: 768px) {
+      .hamburger {
+        display: block;
+      }
+
+      .nav-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--header-bg);
+        flex-direction: column;
+        align-items: center;
+        padding: 1.5rem 0;
+        gap: 1.5rem;
+        box-shadow: var(--shadow);
+        display: none;
+      }
+
+      .nav-menu.active {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <nav class="navbar">
+      <a href="#" class="logo">MyWebSite</a>
+      
+      <div class="nav-tools">
+        <!-- Extra 1: Dark Mode Toggle -->
+        <button id="themeToggle" class="theme-btn" aria-label="Đổi giao diện">Dark Mode</button>
+        
+        <!-- Extra 2: Hamburger Icon -->
+        <button id="hamburgerBtn" class="hamburger" aria-label="Mở menu">☰</button>
+      </div>
+
+      <ul id="navMenu" class="nav-menu">
+        <li><a href="#home" class="nav-link">Trang chủ</a></li>
+        <li><a href="#features" class="nav-link">Tính năng</a></li>
+        <li><a href="#contact" class="nav-link">Liên hệ</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main id="home">
+    <section class="hero">
+      <h1>Chào Mừng Đến Với Dự Án Web Mẫu</h1>
+      <p>Trang web này thể hiện khả năng đáp ứng tiêu chuẩn W3C, Responsive Design và tích hợp 4 tính năng Extras nâng cao.</p>
+    </section>
+
+    <!-- SECTION: FEATURES GRID -->
+    <section id="features">
+      <h2 class="section-title">Các Tính Năng "Extras" Trong Dự Án</h2>
+      
+      <div class="grid-container">
+        <article class="card">
+          <h3>1. Dark / Light Mode</h3>
+          <p>Cho phép người dùng chuyển đổi giao diện Sáng/Tối. Trạng thái được lưu tự động bằng LocalStorage.</p>
+        </article>
+
+        <article class="card">
+          <h3>2. Responsive Menu</h3>
+          <p>Tự động chuyển đổi sang menu Hamburger gọn gàng khi xem trên các thiết bị màn hình nhỏ (Mobile/Tablet).</p>
+        </article>
+
+        <article class="card">
+          <h3>3. Scroll to Top</h3>
+          <p>Nút bấm nổi giúp cuộn nhanh và mượt mà về đầu trang khi người dùng cuộn xuống dưới quá 300px.</p>
+        </article>
+
+        <article class="card">
+          <h3>4. Form Validation</h3>
+          <p>Kiểm tra dữ liệu nhập vào form liên hệ thời gian thực, phát hiện lỗi ngay trước khi bấm gửi.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- SECTION: CONTACT FORM -->
+    <section id="contact">
+      <h2 class="section-title">Liên Hệ Với Tôi</h2>
+      
+      <form id="contactForm" class="contact-form" novalidate>
+        <div class="form-group">
+          <label for="name">Họ và Tên:</label>
+          <input type="text" id="name" name="name" placeholder="Nhập tên của bạn...">
+          <div id="nameError" class="error-message">Vui lòng nhập họ và tên (ít nhất 2 ký tự).</div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" placeholder="example@domain.com">
+          <div id="emailError" class="error-message">Vui lòng nhập định dạng email hợp lệ.</div>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Lời nhắn:</label>
+          <textarea id="message" name="message" rows="4" placeholder="Nhập nội dung..."></textarea>
+          <div id="messageError" class="error-message">Lời nhắn không được để trống.</div>
+        </div>
+
+        <button type="submit" class="submit-btn">Gửi Thư</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- Extra 3: Scroll to Top Button -->
+  <button id="backToTopBtn" class="back-to-top" aria-label="Cuộn lên đầu trang">↑</button>
+
+  <!-- ==========================================================================
+     JAVASCRIPT IMPLEMENTATION
+     ========================================================================== -->
+  <script>
+    // --------------------------------------------------------------------------
+    // EXTRA 1: Dark Mode Toggle với LocalStorage
+    // --------------------------------------------------------------------------
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme');
+
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      themeToggleBtn.textContent = savedTheme === 'dark' ? 'Light Mode' : 'Dark Mode';
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      let newTheme = 'light';
+
+      if (currentTheme !== 'dark') {
+        newTheme = 'dark';
+      }
+
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeToggleBtn.textContent = newTheme === 'dark' ? 'Light Mode' : 'Dark Mode';
+    });
+
+    // --------------------------------------------------------------------------
+    // EXTRA 2: Mobile Hamburger Menu
+    // --------------------------------------------------------------------------
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const navMenu = document.getElementById('navMenu');
+
+    hamburgerBtn.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+    });
+
+    // Tự động đóng menu khi chọn link trên mobile
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+      });
+    });
+
+    // --------------------------------------------------------------------------
+    // EXTRA 3: Scroll-to-Top Button
+    // --------------------------------------------------------------------------
+    const backToTopBtn = document.getElementById('backToTopBtn');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backToTopBtn.style.display = 'block';
+      } else {
+        backToTopBtn.style.display = 'none';
+      }
+    });
+
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    // --------------------------------------------------------------------------
+    // EXTRA 4: Dynamic Form Validation
+    // --------------------------------------------------------------------------
+    const contactForm = document.getElementById('contactForm');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const messageInput = document.getElementById('message');
+
+    const nameError = document.getElementById('nameError');
+    const emailError = document.getElementById('emailError');
+    const messageError = document.getElementById('messageError');
+
+    // Hàm kiểm tra Email bằng Regex
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let isValid = true;
+
+      // Validate Name
+      if (nameInput.value.trim().length < 2) {
+        nameError.style.display = 'block';
+        isValid = false;
+      } else {
+        nameError.style.display = 'none';
+      }
+
+      // Validate Email
+      if (!isValidEmail(emailInput.value.trim())) {
+        emailError.style.display = 'block';
+        isValid = false;
+      } else {
+        emailError.style.display = 'none';
+      }
+
+      // Validate Message
+      if (messageInput.value.trim() === '') {
+        messageError.style.display = 'block';
+        isValid = false;
+      } else {
+        messageError.style.display = 'none';
+      }
+
+      if (isValid) {
+        alert('Cảm ơn bạn! Tin nhắn đã được gửi thành công.');
+        contactForm.reset();
+      }
+    });
+  </script>
+</body>
+</html>
